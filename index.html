@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Login/Register</title>
+</head>
+<body>
+  <h1>Login/Register</h1>
+
+  <div id="login-form">
+    <h2>Login</h2>
+    <form>
+      <label>Email:</label>
+      <input type="email" id="login-email" required>
+      <br>
+      <label>Password:</label>
+      <input type="password" id="login-password" required>
+      <br>
+      <button type="submit" id="login-button">Login</button>
+    </form>
+  </div>
+
+  <div id="register-form">
+    <h2>Register</h2>
+    <form>
+      <label>Email:</label>
+      <input type="email" id="register-email" required>
+      <br>
+      <label>Password:</label>
+      <input type="password" id="register-password" required>
+      <br>
+      <button type="submit" id="register-button">Register</button>
+    </form>
+  </div>
+
+  <script>
+    const loginForm = document.querySelector('#login-form');
+    const loginEmailInput = document.querySelector('#login-email');
+    const loginPasswordInput = document.querySelector('#login-password');
+    const loginButton = document.querySelector('#login-button');
+
+    const registerForm = document.querySelector('#register-form');
+    const registerEmailInput = document.querySelector('#register-email');
+    const registerPasswordInput = document.querySelector('#register-password');
+    const registerButton = document.querySelector('#register-button');
+
+    loginForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const email = loginEmailInput.value;
+      const password = loginPasswordInput.value;
+
+      const data = { email, password };
+
+      fetch('http://localhost:8082/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        alert('Login successful!');
+      })
+      .catch(error => console.error(error));
+    });
+
+    registerForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const email = registerEmailInput.value;
+      const password = registerPasswordInput.value;
+
+      const data = { email, password };
+
+      fetch('http://localhost:8082/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        alert('Registration successful!');
+      })
+      .catch(error => console.error(error));
+    });
+  </script>
+</body>
+</html>

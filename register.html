@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Register</title>
+</head>
+<body>
+  <h1>Register</h1>
+  <form>
+    <label>Username:</label>
+    <input type="text" id="username" required>
+    <br>
+    <label>Email:</label>
+    <input type="email" id="email" required>
+    <br>
+    <label>Password:</label>
+    <input type="password" id="password" required>
+    <br>
+    <label>Confirm Password:</label>
+    <input type="password" id="confirmPassword" required>
+    <br>
+    <button type="submit" id="register">Register</button>
+  </form>
+  <p>已经有账号了？<a href="/login">点击登录</a></p>
+  <div id="message"></div>
+  <script>
+    const form = document.querySelector('form');
+    const username = document.querySelector('#username');
+    const email = document.querySelector('#email');
+    const password = document.querySelector('#password');
+    const confirmPassword = document.querySelector('#confirmPassword');
+    const message = document.querySelector('#message');
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      if (password.value !== confirmPassword.value) {
+        message.textContent = '两次输入的密码不一致';
+        message.style.color = 'red';
+        return;
+      }
+
+      const response = await fetch('/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          username: username.value,
+          email: email.value,
+          password: password.value
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        message.textContent = data.status;
+        message.style.color = 'green';
+        setTimeout(() => {
+          window.location.href = '/login';
+        }, 1000);
+      } else {
+        message.textContent = data.error;
+        message.style.color = 'red';
+      }
+    });
+  </script>
+</body>
+</html>
